@@ -62,8 +62,8 @@ def main():
 
             # Introduce the name for the file to store results
             file_name = input("Introduce file name: ")
-            file_path = p / file_name
-            Path.touch(f"{file_path}.txt", mode=0o644)
+            file_path = p / f"{file_name}.txt"
+            Path.touch(file_path, mode=0o644)
 
             # Fill the file with the results
             results = dirs + files
