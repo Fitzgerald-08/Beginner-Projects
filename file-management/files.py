@@ -12,7 +12,7 @@ import sys
 # --> sys (currently using)
 
 # Change the path to whatever is desired
-p = Path("/home/marshall/")
+p = Path("/home")
 
 # Show the results of the file scanning
 def show_results(dirs, files, dir_contents):
@@ -42,28 +42,33 @@ def main():
     dirs = []
     files = []
 
+    # Attempt to read the contents of the a directory
     try:
         for file in p.iterdir():
             if file.is_dir():
                 dirs.append(file.name)
             if file.is_file():
                 files.append(file.name)
+    # If permissions are not enough, catch the exception
     except PermissionError as e:
         print(f"An error has occured...\n{e}")
         sys.exit(1)
+    # If the directory is correctly read, print a message to let the user know it
     else:
         print("[+] Directories read correctly")
 
+    # Ask the user what to do with the data, either save the the results to
+    # a file or directly view them
     results = ""
     while True:
         results = input("[V]iew results\n[S]ave to file\ninput: ").lower()
 
         if results == "s":
 
-            # Introduce the name for the file to store results
+            # Input the name for the file to store results
             file_name = input("Introduce file name: ")
             file_path = p / f"{file_name}.txt"
-            Path.touch(file_path, mode=0o644)
+            Path.touch(file_path, mode=0o644)  # Create a file with appropiate permissions
 
             # Fill the file with the results
             results = dirs + files
@@ -77,7 +82,7 @@ def main():
             dir_contents = dirs + files
             show_results(dirs, files, dir_contents)
             sys.exit(0)
-        else:
+        else:  # As long as the input is not S/V keep going the while loop
             print("[!] Input error. Specify S/V")
 
 
